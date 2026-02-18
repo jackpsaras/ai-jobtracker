@@ -14,3 +14,5 @@ class Job(Base):
     id = Column(Integer, primary_key=True, index=True)
     company = Column(String, nullable=False)
     role = Column(String, nullable=False)
+    status = Column(String, default="Applied")
+    applied_date = Column(DateTime, default=datetime.utcnow)
