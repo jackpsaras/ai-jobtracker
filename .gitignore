@@ -17,6 +17,6 @@ node_modules/
 # Docker
 *.env
 
-# Misc
+# Misc ds store sucks
 .DS_Store
 Thumbs.db
