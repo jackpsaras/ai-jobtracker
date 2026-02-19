@@ -16,3 +16,32 @@ def get_db():
         yield db
     finally:
         db.close()
+
+@router.post("/", response_model=Job)
+def create(job: JobCreate, db: Session = Depends(get_db)):
+    # Simple create – no auth yet.
+    return create_job(db, job)
+
+@router.get("/", response_model=list[Job])
+def read_all(db: Session = Depends(get_db)):
+    return get_jobs(db)
+
+@router.get("/{job_id}", response_model=Job)
+def read_one(job_id: int, db: Session = Depends(get_db)):
+    job = get_job(db, job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
+    return job
+
+@router.put("/{job_id}", response_model=Job)
+def update(job_id: int, job: JobCreate, db: Session = Depends(get_db)):
+    updated = update_job(db, job_id, job)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Job not found")
+    return updated
+
+@router.delete("/{job_id}")
+def delete(job_id: int, db: Session = Depends(get_db)):
+    if not delete_job(db, job_id):
+        raise HTTPException(status_code=404, detail="Job not found")
+    return {"message": "Job deleted"}
