@@ -4,6 +4,7 @@
 from fastapi import FastAPI
 from .database import engine
 from . import models
+from .routes import jobs
 
 app = FastAPI(title="JobTrackr API")
 
@@ -14,3 +15,6 @@ def health_check():
 
 # Create tables.
 models.Base.metadata.create_all(bind=engine)
+
+# Include job routes
+app.include_router(jobs.router)
