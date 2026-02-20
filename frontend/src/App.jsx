@@ -13,7 +13,7 @@ function App() {
       <h1>JobTrackr Pro</h1>
       <JobForm onJobAdded={() => setRefresh(refresh + 1)} />
       <h3>My Applications</h3>
-      <JobList key={refresh} />
+      <JobList onJobDeleted={() => setRefresh(refresh + 1)} />
     </div>
   );
 }
