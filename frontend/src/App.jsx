@@ -1,7 +1,9 @@
 // frontend/src/App.jsx
 
+import { useState } from 'react';
 import JobForm from './components/JobForm';
 import JobList from './components/JobList';
+import './styles.css';
 
 function App() {
   const [refresh, setRefresh] = useState(0);  // To trigger list refresh
@@ -10,7 +12,8 @@ function App() {
     <div>
       <h1>JobTrackr Pro</h1>
       <JobForm onJobAdded={() => setRefresh(refresh + 1)} />
-      <JobList key={refresh} />  // Key forces re-fetch
+      <h3>My Applications</h3>
+      <JobList key={refresh} />
     </div>
   );
 }
