@@ -2,23 +2,27 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 
-export default function JobList({ onJobDeleted }) {  
+export default function JobList({ onJobDeleted, refresh }) {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
     setLoading(true);
     api.get("/jobs")
       .then(res => {
+        if (!mounted) return;
         setJobs(res.data || []);
         setLoading(false);
       })
       .catch(err => {
+        if (!mounted) return;
         console.error("Fetch jobs error:", err);
         setJobs([]);
         setLoading(false);
       });
-  }, [onJobDeleted]);   //refetch when a delete happens
+    return () => { mounted = false };
+  }, [refresh]); // refetch when `refresh` changes
   // Delete handler with confirmation
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this job application?")) return;
